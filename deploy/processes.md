@@ -1,6 +1,6 @@
 # Process Layout
 
-Recommended production processes:
+Рекомендуемые production processes:
 
 ## API
 
@@ -37,4 +37,4 @@ cd frontend-next
 NEXT_PUBLIC_API_BASE=http://localhost:8000 npm run start
 ```
 
-Use a process manager such as systemd, supervisor, or a managed platform process runner.
+Для постоянного запуска использовать process manager: systemd, supervisor или managed platform process runner.
