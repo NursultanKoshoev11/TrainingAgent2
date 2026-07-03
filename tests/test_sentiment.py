@@ -1,6 +1,11 @@
+import sys
 import unittest
+from pathlib import Path
 
-from backend.app.sentiment import aggregate, enrich_news, local_score_text
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'backend'))
+
+from app.sentiment import aggregate, enrich_news, local_score_text
 
 
 class SentimentTests(unittest.TestCase):
