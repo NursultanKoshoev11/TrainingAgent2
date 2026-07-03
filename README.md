@@ -1,6 +1,6 @@
 # Crypto AI Advisor
 
-Crypto AI Advisor is an advisory-only crypto market analysis project. It combines public market data, optional CCXT exchange access, news context, sentiment scoring, risk scoring, liquidity scoring, event-risk scoring, derivatives-risk placeholders, macro/social context placeholders, data-quality flags, local signal storage, reports, backtesting helpers, streaming foundations, market screening, persistence pipelines, diagnostics, and explainable recommendations.
+Crypto AI Advisor is an advisory-only crypto market analysis project. It combines public market data, optional CCXT exchange access, news context, sentiment scoring, risk scoring, liquidity scoring, event-risk scoring, derivatives-risk placeholders, macro/social context placeholders, data-quality flags, local signal storage, reports, backtesting helpers, streaming foundations, market screening, persistence pipelines, diagnostics, operations templates, and explainable recommendations.
 
 ## Implemented now
 
@@ -55,8 +55,11 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Job endpoints: `/api/jobs/symbol` and `/api/jobs/batch`.
 - Readiness endpoint: `/api/readiness`.
 - Diagnostics endpoint: `/api/diagnostics`.
+- Deep health endpoint: `/api/health/deep`.
 - Diagnostics service: `backend/app/diagnostics.py`.
+- Deep health service: `backend/app/deep_health.py`.
 - Runtime check script: `scripts/runtime_check.py`.
+- PostgreSQL init script: `scripts/init_postgres.py`.
 - Overview service with alerts and portfolio bias: `backend/app/overview_service.py`.
 - Alert service: `backend/app/alerts.py`.
 - Portfolio exposure service: `backend/app/portfolio.py`.
@@ -85,6 +88,9 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Production checklist: `docs/PRODUCTION_CHECKLIST.md`.
 - Runtime check guide: `docs/RUNTIME_CHECK.md`.
 - Deployment notes: `deploy/README.md`.
+- Operations guide: `deploy/OPERATIONS.md`.
+- Production env template: `deploy/env.example.production`.
+- Systemd templates: `deploy/systemd-api.service`, `deploy/systemd-scheduler.service`, `deploy/systemd-stream.service`, `deploy/systemd-feed.service`.
 - Process layout: `deploy/processes.md`.
 - Runbook: `docs/RUNBOOK.md`.
 
@@ -117,6 +123,7 @@ GET /api/runtime/status
 GET /api/scheduler/status
 GET /api/readiness
 GET /api/diagnostics
+GET /api/health/deep
 GET /api/context/status
 GET /api/universe?exchange=binance&timeframe=1h&limit=10
 GET /api/screener?exchange=binance&timeframe=1h&limit=10
@@ -187,13 +194,13 @@ NEXT_PUBLIC_API_BASE=http://localhost:8000 npm run dev
 
 ## Current completion estimate
 
-94% complete as code/architecture.
+95% complete as code/architecture.
 
 Remaining production work:
 
 1. Runtime verification and fixes after installing dependencies.
 2. Source-specific macro/social provider fetchers require confirmed API/source rules.
-3. Docker files were blocked by repository write safety tooling; deployment runbook and process layout are present instead.
+3. Docker files were blocked by repository write safety tooling; deployment runbook, operations guide, process layout, and systemd templates are present instead.
 4. Next.js dashboard needs UI polish beyond scaffold/main/health pages.
 5. Cryptofeed runner needs runtime validation against installed cryptofeed version.
 
