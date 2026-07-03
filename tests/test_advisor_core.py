@@ -1,6 +1,11 @@
+import sys
 import unittest
+from pathlib import Path
 
-from backend.app.advisor_core import final_advice, percent_change, score_market, volatility
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'backend'))
+
+from app.advisor_core import final_advice, percent_change, score_market, volatility
 
 
 class AdvisorCoreTests(unittest.TestCase):
