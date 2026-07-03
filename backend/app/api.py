@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Query
 
 from app.advice_service import build_advice
+from app.database import database_status, list_recent_advisory_signals, save_advisory_signal
 from app.market_service import build_market_snapshot
 from app.news_data import latest_news
 from app.overview_service import build_overview
 from app.sentiment import enrich_news
-from app.storage import recent_signals, save_signal
 from app.watchlist import get_watchlist
 
 router = APIRouter()
@@ -19,6 +19,11 @@ def ping():
 @router.get('/api/watchlist')
 def watchlist():
     return get_watchlist()
+
+
+@router.get('/api/database/status')
+def db_status():
+    return database_status()
 
 
 @router.get('/api/market/snapshot')
@@ -35,7 +40,7 @@ def news_latest(symbol: str = Query('BTC/USDT'), limit: int = Query(12, ge=1, le
 def advice(symbol: str = Query('BTC/USDT'), exchange: str = Query('binance'), timeframe: str = Query('1h'), save: bool = Query(False)):
     result = build_advice(symbol=symbol, exchange=exchange, timeframe=timeframe)
     if save:
-        result['saved_signal_id'] = save_signal(result)
+        result['saved_signal_id'] = save_advisory_signal(result)
     return result
 
 
@@ -46,4 +51,4 @@ def overview(exchange: str = Query('binance'), timeframe: str = Query('1h')):
 
 @router.get('/api/signals/recent')
 def signals_recent(limit: int = Query(50, ge=1, le=200)):
-    return {'items': recent_signals(limit=limit)}
+    return {'items': list_recent_advisory_signals(limit=limit)}
