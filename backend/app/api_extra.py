@@ -2,6 +2,7 @@ from fastapi import APIRouter, Query
 
 from app.batch_pipeline import run_batch_pipeline
 from app.context_registry import context_registry_status
+from app.diagnostics import diagnostics_report
 from app.market_regime import classify_market_regime
 from app.market_service import build_market_snapshot
 from app.pipeline import run_symbol_pipeline
@@ -26,6 +27,11 @@ def scheduler():
 @extra_router.get('/api/readiness')
 def readiness():
     return readiness_report()
+
+
+@extra_router.get('/api/diagnostics')
+def diagnostics():
+    return diagnostics_report()
 
 
 @extra_router.get('/api/context/status')
