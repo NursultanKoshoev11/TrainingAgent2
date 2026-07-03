@@ -1,0 +1,13 @@
+[Unit]
+Description=Crypto AI Advisor Scheduler
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/crypto-ai-advisor/backend
+EnvironmentFile=/opt/crypto-ai-advisor/.env
+ExecStart=/usr/bin/python -m app.scheduler
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
