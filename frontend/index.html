@@ -3,9 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <title>Crypto AI Advisor</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 32px; background: #0b1020; color: #f4f7fb; }
+    .card { border: 1px solid #26314f; background: #121a2e; border-radius: 12px; padding: 16px; margin: 16px 0; }
+    code { background: #18223a; padding: 3px 6px; border-radius: 6px; }
+  </style>
 </head>
 <body>
   <h1>Crypto AI Advisor</h1>
-  <p>Dashboard placeholder. Connect it to the backend demo endpoint next.</p>
+  <p>Advisory-only dashboard prototype.</p>
+  <div class="card">
+    <h2>Backend endpoints</h2>
+    <p><code>/ping</code></p>
+    <p><code>/api/overview</code></p>
+    <p><code>/api/advice?symbol=BTC/USDT&exchange=binance&timeframe=1h</code></p>
+    <p><code>/api/market/snapshot?symbol=BTC/USDT&exchange=binance&timeframe=1h</code></p>
+    <p><code>/api/news/latest?symbol=BTC/USDT</code></p>
+  </div>
 </body>
 </html>
