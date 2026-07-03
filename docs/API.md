@@ -8,6 +8,8 @@
 - `GET /api/streaming/status`
 - `GET /api/runtime/status`
 - `GET /api/scheduler/status`
+- `GET /api/readiness`
+- `GET /api/diagnostics`
 - `GET /api/context/status`
 
 ## Watchlist and universe
@@ -15,6 +17,11 @@
 - `GET /api/watchlist`
 - `GET /api/universe?exchange=binance&timeframe=1h&limit=10`
 - `GET /api/screener?exchange=binance&timeframe=1h&limit=10`
+
+## Jobs and persistence
+
+- `GET /api/jobs/symbol?symbol=BTC/USDT&exchange=binance&timeframe=1h&save=true`
+- `GET /api/jobs/batch?exchange=binance&timeframe=1h&limit=10&save=true`
 
 ## Market and news
 
