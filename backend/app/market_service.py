@@ -1,5 +1,5 @@
 from app.advisor_core import score_market
-from app.market_data import fetch_candles
+from app.exchange_adapter import fetch_candles
 
 
 def build_market_snapshot(symbol='BTC/USDT', exchange='binance', timeframe='1h'):
