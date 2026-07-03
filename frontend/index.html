@@ -5,20 +5,30 @@
   <title>Crypto AI Advisor</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 32px; background: #0b1020; color: #f4f7fb; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
     .card { border: 1px solid #26314f; background: #121a2e; border-radius: 12px; padding: 16px; margin: 16px 0; }
-    code { background: #18223a; padding: 3px 6px; border-radius: 6px; }
+    code, pre { background: #18223a; padding: 8px; border-radius: 6px; overflow: auto; }
+    button { padding: 10px 14px; border: 0; border-radius: 8px; cursor: pointer; }
   </style>
 </head>
 <body>
   <h1>Crypto AI Advisor</h1>
-  <p>Advisory-only dashboard prototype.</p>
-  <div class="card">
-    <h2>Backend endpoints</h2>
-    <p><code>/ping</code></p>
-    <p><code>/api/overview</code></p>
-    <p><code>/api/advice?symbol=BTC/USDT&exchange=binance&timeframe=1h</code></p>
-    <p><code>/api/market/snapshot?symbol=BTC/USDT&exchange=binance&timeframe=1h</code></p>
-    <p><code>/api/news/latest?symbol=BTC/USDT</code></p>
+  <p>Advisory-only dashboard prototype. Start the backend on <code>http://localhost:8000</code>.</p>
+  <button onclick="bootDashboard()">Refresh dashboard</button>
+  <div class="grid">
+    <div class="card">
+      <h2>Overview</h2>
+      <pre id="overview">Loading...</pre>
+    </div>
+    <div class="card">
+      <h2>BTC Advice</h2>
+      <pre id="advice">Loading...</pre>
+    </div>
+    <div class="card">
+      <h2>Recent Signals</h2>
+      <pre id="signals">Loading...</pre>
+    </div>
   </div>
+  <script src="app.js"></script>
 </body>
 </html>
