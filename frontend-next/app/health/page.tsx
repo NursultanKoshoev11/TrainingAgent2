@@ -12,7 +12,7 @@ export default async function HealthPage() {
   const context = await getJson('/api/context/status');
   return (
     <main style={{ padding: 32, fontFamily: 'Arial, sans-serif' }}>
-      <h1>Provider Health</h1>
+      <h1>Статус провайдеров</h1>
       <h2>Providers</h2>
       <pre>{JSON.stringify(health, null, 2)}</pre>
       <h2>Runtime</h2>
