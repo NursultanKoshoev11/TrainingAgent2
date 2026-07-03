@@ -1,0 +1,13 @@
+[Unit]
+Description=Crypto AI Advisor Market Feed Runner
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/crypto-ai-advisor/backend
+EnvironmentFile=/opt/crypto-ai-advisor/.env
+ExecStart=/usr/bin/python -m app.cryptofeed_runner
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
