@@ -8,6 +8,7 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - FastAPI server entrypoint: `backend/app/server.py`.
 - API router: `backend/app/api.py`.
 - Extra API router: `backend/app/api_extra.py`.
+- Explanation API router: `backend/app/api_explain.py`.
 - Market scoring core: `backend/app/advisor_core.py`.
 - Public market data service: `backend/app/market_data.py`.
 - Optional exchange adapter: `backend/app/exchange_adapter.py`.
@@ -17,9 +18,15 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Market regime classifier: `backend/app/market_regime.py`.
 - RSS news service: `backend/app/news_data.py`.
 - Optional CryptoPanic source: `backend/app/external_news.py`.
+- GDELT adapter skeleton: `backend/app/gdelt_adapter.py`.
+- Exchange announcements skeleton: `backend/app/exchange_announcements.py`.
+- Regulatory news skeleton: `backend/app/regulatory_news.py`.
 - News ranking service: `backend/app/news_ranker.py`.
 - Optional external sentiment model adapter: `backend/app/model_adapter.py`.
 - Sentiment service: `backend/app/sentiment.py`.
+- Macro adapters skeleton: `backend/app/macro_adapters.py`.
+- Social adapters skeleton: `backend/app/social_adapters.py`.
+- Context registry: `backend/app/context_registry.py`.
 - Risk service: `backend/app/risk.py`.
 - Liquidity service: `backend/app/liquidity.py`.
 - Event-risk service: `backend/app/event_risk.py`.
@@ -34,6 +41,8 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Social context skeleton: `backend/app/social.py`.
 - Data quality checks: `backend/app/data_quality.py`.
 - Score explainer: `backend/app/score_explainer.py`.
+- Advisory rules: `backend/app/strategy_rules.py`.
+- Advice explainer: `backend/app/advice_explainer.py`.
 - Full advice service: `backend/app/advice_service.py`.
 - Overview service with alerts and portfolio bias: `backend/app/overview_service.py`.
 - Alert service: `backend/app/alerts.py`.
@@ -45,6 +54,7 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Expanded database schema: `backend/app/db_schema.py`.
 - Database helper: `backend/app/db.py`.
 - PostgreSQL adapter skeleton: `backend/app/postgres_adapter.py`.
+- Timescale/PostgreSQL schema draft: `database/timescale_schema.sql`.
 - Local SQLite signal storage: `backend/app/storage.py`.
 - Scheduler cycle service: `backend/app/scheduler.py`.
 - Streaming event layer: `backend/app/streaming.py`.
@@ -54,9 +64,11 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Backtest service: `backend/app/backtest_service.py`.
 - Backtest report builder: `backend/app/backtest_report.py`.
 - Static dashboard prototype: `frontend/index.html` and `frontend/app.js`.
+- Next.js dashboard scaffold: `frontend-next/`.
 - API reference: `docs/API.md`.
 - Service map: `docs/SERVICE_MAP.md`.
 - Integration notes: `docs/INTEGRATIONS.md`.
+- Production DB notes: `docs/PRODUCTION_DB.md`.
 - Runbook: `docs/RUNBOOK.md`.
 
 Important: this project analyzes and explains. It does not execute trades.
@@ -86,11 +98,13 @@ GET /api/database/status
 GET /api/streaming/status
 GET /api/runtime/status
 GET /api/scheduler/status
+GET /api/context/status
 GET /api/universe?exchange=binance&timeframe=1h&limit=10
 GET /api/market/regime?symbol=BTC/USDT&exchange=binance&timeframe=1h
 GET /api/market/snapshot?symbol=BTC/USDT&exchange=binance&timeframe=1h
 GET /api/news/latest?symbol=BTC/USDT&limit=12
 GET /api/advice?symbol=BTC/USDT&exchange=binance&timeframe=1h
+GET /api/advice/explain?symbol=BTC/USDT&exchange=binance&timeframe=1h
 GET /api/advice?symbol=BTC/USDT&exchange=binance&timeframe=1h&save=true
 GET /api/overview?exchange=binance&timeframe=1h
 GET /api/reports/json?exchange=binance&timeframe=1h
@@ -118,6 +132,7 @@ Optional news and model integrations:
 ```text
 CRYPTOPANIC_API_KEY=
 SENTIMENT_MODEL_URL=
+GDELT_ENABLED=false
 ```
 
 ## Worker and scheduler
@@ -131,13 +146,25 @@ python -m app.stream_worker
 
 The worker and scheduler use configured symbols from `DEFAULT_SYMBOLS`.
 
+## Dashboards
+
+```bash
+# Static prototype
+open frontend/index.html
+
+# Next.js scaffold
+cd frontend-next
+npm install
+NEXT_PUBLIC_API_BASE=http://localhost:8000 npm run dev
+```
+
 ## Next build steps
 
-1. Replace placeholder macro/social providers with real data adapters.
+1. Replace placeholder macro/social providers with real provider fetchers.
 2. Add deeper PostgreSQL or TimescaleDB production persistence.
 3. Wire actual Cryptofeed callbacks into the streaming worker.
 4. Add deployment files when repository write restrictions allow it.
-5. Polish the dashboard into a full React or Next.js frontend.
+5. Polish the dashboard into a production frontend.
 
 ## Safety rule
 
