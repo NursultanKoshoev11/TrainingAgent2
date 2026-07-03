@@ -7,6 +7,7 @@ from app.export_service import signals_as_lines
 from app.market_service import build_market_snapshot
 from app.news_data import latest_news
 from app.overview_service import build_overview
+from app.provider_health import provider_health
 from app.reporting import build_json_report, build_text_report
 from app.sentiment import enrich_news
 from app.streaming import streaming_status
@@ -23,6 +24,11 @@ def ping():
 @router.get('/api/watchlist')
 def watchlist():
     return get_watchlist()
+
+
+@router.get('/api/providers/health')
+def providers_health():
+    return provider_health()
 
 
 @router.get('/api/database/status')
