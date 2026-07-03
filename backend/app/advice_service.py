@@ -1,4 +1,5 @@
 from app.advisor_core import final_advice
+from app.asset_profile import get_asset_profile
 from app.data_quality import build_quality_flags
 from app.event_risk import detect_event_risk
 from app.liquidity import estimate_liquidity
@@ -19,6 +20,7 @@ def build_advice(symbol='BTC/USDT', exchange='binance', timeframe='1h', news_lim
     event_risk = detect_event_risk(news)
     macro = neutral_macro_context()
     social = neutral_social_context()
+    profile = get_asset_profile(symbol)
     risk = calculate_risk(market, news)
     combined_risk = min(100, risk['risk_score'] + event_risk['event_risk_score'] * 0.25 + max(0, 50 - liquidity['liquidity_score']) * 0.2)
     adjusted_sentiment = round((sentiment_score * 0.75) + (social['social_score'] * 0.15) + (macro['macro_score'] * 0.10), 2)
@@ -29,6 +31,7 @@ def build_advice(symbol='BTC/USDT', exchange='binance', timeframe='1h', news_lim
     return {
         'exchange': exchange,
         'symbol': symbol,
+        'asset_profile': profile,
         'timeframe': timeframe,
         'recommendation': advice['label'],
         'confidence': confidence,
