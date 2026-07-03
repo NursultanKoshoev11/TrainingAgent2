@@ -9,25 +9,21 @@
     .card { border: 1px solid #26314f; background: #121a2e; border-radius: 12px; padding: 16px; margin: 16px 0; }
     code, pre { background: #18223a; padding: 8px; border-radius: 6px; overflow: auto; }
     button { padding: 10px 14px; border: 0; border-radius: 8px; cursor: pointer; }
+    input { padding: 10px; border-radius: 8px; border: 1px solid #26314f; background: #0b1020; color: #f4f7fb; }
   </style>
 </head>
 <body>
   <h1>Crypto AI Advisor</h1>
   <p>Advisory-only dashboard prototype. Start the backend on <code>http://localhost:8000</code>.</p>
+  <input id="symbol" value="BTC/USDT" />
   <button onclick="bootDashboard()">Refresh dashboard</button>
   <div class="grid">
-    <div class="card">
-      <h2>Overview</h2>
-      <pre id="overview">Loading...</pre>
-    </div>
-    <div class="card">
-      <h2>BTC Advice</h2>
-      <pre id="advice">Loading...</pre>
-    </div>
-    <div class="card">
-      <h2>Recent Signals</h2>
-      <pre id="signals">Loading...</pre>
-    </div>
+    <div class="card"><h2>Overview</h2><pre id="overview">Loading...</pre></div>
+    <div class="card"><h2>Asset Advice</h2><pre id="advice">Loading...</pre></div>
+    <div class="card"><h2>Provider Health</h2><pre id="health">Loading...</pre></div>
+    <div class="card"><h2>Watchlist</h2><pre id="watchlist">Loading...</pre></div>
+    <div class="card"><h2>Text Report</h2><pre id="report">Loading...</pre></div>
+    <div class="card"><h2>Recent Signals</h2><pre id="signals">Loading...</pre></div>
   </div>
   <script src="app.js"></script>
 </body>
