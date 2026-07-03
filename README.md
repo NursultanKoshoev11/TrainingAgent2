@@ -1,6 +1,6 @@
 # Crypto AI Advisor
 
-Crypto AI Advisor is an advisory-only crypto market analysis project. It combines public market data, optional CCXT exchange access, news context, sentiment scoring, risk scoring, liquidity scoring, event-risk scoring, derivatives-risk placeholders, macro/social context placeholders, data-quality flags, local signal storage, reports, backtesting helpers, streaming foundations, and explainable recommendations.
+Crypto AI Advisor is an advisory-only crypto market analysis project. It combines public market data, optional CCXT exchange access, news context, sentiment scoring, risk scoring, liquidity scoring, event-risk scoring, derivatives-risk placeholders, macro/social context placeholders, data-quality flags, local signal storage, reports, backtesting helpers, streaming foundations, market screening, persistence pipelines, and explainable recommendations.
 
 ## Implemented now
 
@@ -9,13 +9,19 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - API router: `backend/app/api.py`.
 - Extra API router: `backend/app/api_extra.py`.
 - Explanation API router: `backend/app/api_explain.py`.
+- Screener API router: `backend/app/api_screener.py`.
 - Market scoring core: `backend/app/advisor_core.py`.
 - Public market data service: `backend/app/market_data.py`.
 - Optional exchange adapter: `backend/app/exchange_adapter.py`.
 - Market snapshot service: `backend/app/market_service.py`.
+- In-memory TTL cache: `backend/app/memory_cache.py`.
+- Shared network client: `backend/app/net_client.py`.
 - Market universe service: `backend/app/market_universe.py`.
 - Universe scan service: `backend/app/universe_service.py`.
+- Market screener: `backend/app/screener.py`.
+- Market filters: `backend/app/market_filters.py`.
 - Market regime classifier: `backend/app/market_regime.py`.
+- Asset profile service: `backend/app/asset_profile.py`.
 - RSS news service: `backend/app/news_data.py`.
 - Optional CryptoPanic source: `backend/app/external_news.py`.
 - GDELT adapter skeleton: `backend/app/gdelt_adapter.py`.
@@ -44,6 +50,8 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Advisory rules: `backend/app/strategy_rules.py`.
 - Advice explainer: `backend/app/advice_explainer.py`.
 - Full advice service: `backend/app/advice_service.py`.
+- Persistence pipeline: `backend/app/pipeline.py`.
+- Batch pipeline: `backend/app/batch_pipeline.py`.
 - Overview service with alerts and portfolio bias: `backend/app/overview_service.py`.
 - Alert service: `backend/app/alerts.py`.
 - Portfolio exposure service: `backend/app/portfolio.py`.
@@ -100,6 +108,7 @@ GET /api/runtime/status
 GET /api/scheduler/status
 GET /api/context/status
 GET /api/universe?exchange=binance&timeframe=1h&limit=10
+GET /api/screener?exchange=binance&timeframe=1h&limit=10
 GET /api/market/regime?symbol=BTC/USDT&exchange=binance&timeframe=1h
 GET /api/market/snapshot?symbol=BTC/USDT&exchange=binance&timeframe=1h
 GET /api/news/latest?symbol=BTC/USDT&limit=12
