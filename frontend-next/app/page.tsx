@@ -16,17 +16,17 @@ export default async function DashboardPage() {
   return (
     <main style={{ padding: 32, fontFamily: 'Arial, sans-serif' }}>
       <h1>Crypto AI Advisor</h1>
-      <p>Advisory-only dashboard. No real trading controls.</p>
+      <p>Advisory-only dashboard. Здесь нет кнопок для реальной торговли.</p>
       <section>
-        <h2>Overview</h2>
+        <h2>Обзор</h2>
         <pre>{JSON.stringify(overview, null, 2)}</pre>
       </section>
       <section>
-        <h2>Provider Health</h2>
+        <h2>Статус провайдеров</h2>
         <pre>{JSON.stringify(health, null, 2)}</pre>
       </section>
       <section>
-        <h2>Runtime</h2>
+        <h2>Runtime status</h2>
         <pre>{JSON.stringify(runtime, null, 2)}</pre>
       </section>
     </main>
