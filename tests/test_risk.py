@@ -1,6 +1,11 @@
+import sys
 import unittest
+from pathlib import Path
 
-from backend.app.risk import calculate_risk
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'backend'))
+
+from app.risk import calculate_risk
 
 
 class RiskTests(unittest.TestCase):
