@@ -1,18 +1,20 @@
 # Crypto AI Advisor
 
-Crypto AI Advisor is an advisory-only crypto market analysis project. It combines public market data, optional CCXT exchange access, news context, sentiment scoring, risk scoring, liquidity scoring, event-risk scoring, derivatives-risk placeholders, macro/social context placeholders, data-quality flags, local signal storage, reports, backtesting helpers, streaming foundations, market screening, persistence pipelines, diagnostics, operations templates, and explainable recommendations.
+Crypto AI Advisor — это advisory-only система для анализа крипторынка. Проект собирает публичные market data, новости, sentiment, risk signals, liquidity/context flags, сохраняет advisory signals, строит market screener, reports, backtesting helpers, streaming foundation, diagnostics и explainable recommendations.
 
-## Implemented now
+Важно: проект анализирует и объясняет. Он не исполняет сделки и не отправляет ордера на биржи.
+
+## Что уже реализовано
 
 - Backend package structure.
-- FastAPI server entrypoint with CORS: `backend/app/server.py`.
-- API router: `backend/app/api.py`.
+- FastAPI server с CORS: `backend/app/server.py`.
+- Основной API router: `backend/app/api.py`.
 - Extra API router: `backend/app/api_extra.py`.
 - Explanation API router: `backend/app/api_explain.py`.
 - Screener API router: `backend/app/api_screener.py`.
 - Market scoring core: `backend/app/advisor_core.py`.
 - Public market data service: `backend/app/market_data.py`.
-- Optional exchange adapter: `backend/app/exchange_adapter.py`.
+- Optional exchange adapter через CCXT: `backend/app/exchange_adapter.py`.
 - Market snapshot service: `backend/app/market_service.py`.
 - In-memory TTL cache: `backend/app/memory_cache.py`.
 - Shared network client: `backend/app/net_client.py`.
@@ -42,9 +44,7 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Combined derivatives context: `backend/app/risk_context.py`.
 - Book metrics: `backend/app/book_metrics.py`.
 - Trade-flow metrics: `backend/app/trade_flow.py`.
-- Cryptofeed adapter and runner: `backend/app/cryptofeed_adapter.py`, `backend/app/feed_callbacks.py`, `backend/app/cryptofeed_runner.py`.
-- Macro context skeleton: `backend/app/macro.py`.
-- Social context skeleton: `backend/app/social.py`.
+- Cryptofeed adapter и runner: `backend/app/cryptofeed_adapter.py`, `backend/app/feed_callbacks.py`, `backend/app/cryptofeed_runner.py`.
 - Data quality checks: `backend/app/data_quality.py`.
 - Score explainer: `backend/app/score_explainer.py`.
 - Advisory rules: `backend/app/strategy_rules.py`.
@@ -52,51 +52,23 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Full advice service: `backend/app/advice_service.py`.
 - Persistence pipeline: `backend/app/pipeline.py`.
 - Batch pipeline: `backend/app/batch_pipeline.py`.
-- Job endpoints: `/api/jobs/symbol` and `/api/jobs/batch`.
+- Job endpoints: `/api/jobs/symbol` и `/api/jobs/batch`.
 - Readiness endpoint: `/api/readiness`.
 - Diagnostics endpoint: `/api/diagnostics`.
 - Deep health endpoint: `/api/health/deep`.
-- Diagnostics service: `backend/app/diagnostics.py`.
-- Deep health service: `backend/app/deep_health.py`.
 - Runtime check script: `scripts/runtime_check.py`.
 - PostgreSQL init script: `scripts/init_postgres.py`.
-- Overview service with alerts and portfolio bias: `backend/app/overview_service.py`.
-- Alert service: `backend/app/alerts.py`.
-- Portfolio exposure service: `backend/app/portfolio.py`.
-- Watchlist service: `backend/app/watchlist.py`.
-- Runtime status aggregator: `backend/app/runtime_status.py`.
-- Provider health service: `backend/app/provider_health.py`.
-- Database abstraction: `backend/app/database.py`.
-- Expanded database schema: `backend/app/db_schema.py`.
-- Database helper with PostgreSQL routing: `backend/app/db.py`.
-- Real PostgreSQL adapter with psycopg: `backend/app/postgres_adapter.py`.
-- Timescale/PostgreSQL schema draft: `database/timescale_schema.sql`.
-- Local SQLite signal storage: `backend/app/storage.py`.
-- Scheduler cycle service: `backend/app/scheduler.py`.
-- Streaming event layer: `backend/app/streaming.py`.
+- Real PostgreSQL adapter через psycopg: `backend/app/postgres_adapter.py`.
+- PostgreSQL/Timescale schema draft: `database/timescale_schema.sql`.
+- SQLite fallback storage: `backend/app/storage.py`.
+- Scheduler: `backend/app/scheduler.py`.
 - Stream worker: `backend/app/stream_worker.py`.
-- Reporting service: `backend/app/reporting.py`.
-- Signal export service: `backend/app/export_service.py`.
-- Backtest service: `backend/app/backtest_service.py`.
-- Backtest report builder: `backend/app/backtest_report.py`.
-- Static dashboard prototype: `frontend/index.html` and `frontend/app.js`.
-- Next.js dashboard scaffold and health page: `frontend-next/`.
-- API reference: `docs/API.md`.
-- Service map: `docs/SERVICE_MAP.md`.
-- Integration notes: `docs/INTEGRATIONS.md`.
-- Production DB notes: `docs/PRODUCTION_DB.md`.
-- Production checklist: `docs/PRODUCTION_CHECKLIST.md`.
-- Runtime check guide: `docs/RUNTIME_CHECK.md`.
-- Deployment notes: `deploy/README.md`.
-- Operations guide: `deploy/OPERATIONS.md`.
-- Production env template: `deploy/env.example.production`.
-- Systemd templates: `deploy/systemd-api.service`, `deploy/systemd-scheduler.service`, `deploy/systemd-stream.service`, `deploy/systemd-feed.service`.
-- Process layout: `deploy/processes.md`.
-- Runbook: `docs/RUNBOOK.md`.
+- Reports/export/backtest services.
+- Static dashboard: `frontend/index.html` и `frontend/app.js`.
+- Next.js dashboard scaffold: `frontend-next/`.
+- Production docs, runtime docs, deployment docs, systemd templates.
 
-Important: this project analyzes and explains. It does not execute trades.
-
-## Run backend
+## Запуск backend
 
 ```bash
 cd backend
@@ -104,7 +76,7 @@ python -m pip install fastapi uvicorn
 python -m uvicorn app.server:server --reload
 ```
 
-Or:
+Или:
 
 ```bash
 cd backend
@@ -143,14 +115,14 @@ GET /api/signals/recent?limit=50
 GET /api/signals/export?limit=50
 ```
 
-Supported public market sources in this version:
+## Источники market data
 
 ```text
 binance
 bybit
 ```
 
-Optional dependency groups:
+## Optional dependency groups
 
 ```bash
 pip install -e '.[exchange]'
@@ -159,7 +131,7 @@ pip install -e '.[streaming]'
 pip install -e '.[production]'
 ```
 
-Optional news and model integrations:
+## Optional integrations
 
 ```text
 CRYPTOPANIC_API_KEY=
@@ -168,7 +140,7 @@ GDELT_ENABLED=false
 DATABASE_URL=
 ```
 
-## Worker and scheduler
+## Workers
 
 ```bash
 cd backend
@@ -178,7 +150,7 @@ python -m app.stream_worker
 python -m app.cryptofeed_runner
 ```
 
-The worker and scheduler use configured symbols from `DEFAULT_SYMBOLS`.
+Workers используют symbols из `DEFAULT_SYMBOLS`.
 
 ## Dashboards
 
@@ -192,18 +164,19 @@ npm install
 NEXT_PUBLIC_API_BASE=http://localhost:8000 npm run dev
 ```
 
-## Current completion estimate
+## Текущая готовность
 
-95% complete as code/architecture.
+95% готово по коду и архитектуре.
 
-Remaining production work:
+Что осталось до честных 100%:
 
-1. Runtime verification and fixes after installing dependencies.
-2. Source-specific macro/social provider fetchers require confirmed API/source rules.
-3. Docker files were blocked by repository write safety tooling; deployment runbook, operations guide, process layout, and systemd templates are present instead.
-4. Next.js dashboard needs UI polish beyond scaffold/main/health pages.
-5. Cryptofeed runner needs runtime validation against installed cryptofeed version.
+1. Запустить backend и исправить runtime errors.
+2. Проверить optional dependencies: `ccxt`, `psycopg`, `cryptofeed`.
+3. Проверить PostgreSQL на реальном `DATABASE_URL`.
+4. Проверить `cryptofeed_runner` на установленной версии `cryptofeed`.
+5. Доделать polished UI для Next.js dashboard.
+6. Dockerfile/compose блокировались GitHub write tooling, поэтому добавлены deployment docs и systemd templates.
 
-## Safety rule
+## Правило безопасности
 
-The default project must stay advisory-only. Do not add default exchange execution to this backend.
+Проект должен оставаться advisory-only. Не добавлять default exchange order execution и не хранить приватные exchange credentials в репозитории.
