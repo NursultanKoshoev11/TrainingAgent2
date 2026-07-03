@@ -8,6 +8,9 @@ dependencies = [
 
 [project.optional-dependencies]
 exchange = ["ccxt"]
+postgres = ["psycopg[binary]"]
+streaming = ["cryptofeed"]
+production = ["ccxt", "psycopg[binary]", "cryptofeed"]
 
 [tool.uvicorn]
 app = "app.server:server"
