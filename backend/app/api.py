@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Query, Response
 
 from app.advice_service import build_advice
+from app.backtest_service import backtest_symbol
 from app.database import database_status, list_recent_advisory_signals, save_advisory_signal
 from app.market_service import build_market_snapshot
 from app.news_data import latest_news
@@ -64,6 +65,11 @@ def report_json(exchange: str = Query('binance'), timeframe: str = Query('1h')):
 @router.get('/api/reports/text')
 def report_text(exchange: str = Query('binance'), timeframe: str = Query('1h')):
     return Response(content=build_text_report(exchange=exchange, timeframe=timeframe), media_type='text/plain')
+
+
+@router.get('/api/backtest')
+def backtest(symbol: str = Query('BTC/USDT'), exchange: str = Query('binance'), timeframe: str = Query('1h'), limit: int = Query(200, ge=80, le=1000), window: int = Query(40, ge=20, le=300)):
+    return backtest_symbol(symbol=symbol, exchange=exchange, timeframe=timeframe, limit=limit, window=window)
 
 
 @router.get('/api/signals/recent')
