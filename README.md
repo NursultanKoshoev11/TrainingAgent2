@@ -1,6 +1,6 @@
 # Crypto AI Advisor
 
-Crypto AI Advisor is an advisory-only crypto market analysis project. It combines public market data, optional CCXT exchange access, news context, sentiment scoring, risk scoring, liquidity scoring, event-risk scoring, derivatives-risk placeholders, macro/social context placeholders, data-quality flags, local signal storage, reports, backtesting helpers, streaming foundations, market screening, persistence pipelines, and explainable recommendations.
+Crypto AI Advisor is an advisory-only crypto market analysis project. It combines public market data, optional CCXT exchange access, news context, sentiment scoring, risk scoring, liquidity scoring, event-risk scoring, derivatives-risk placeholders, macro/social context placeholders, data-quality flags, local signal storage, reports, backtesting helpers, streaming foundations, market screening, persistence pipelines, diagnostics, and explainable recommendations.
 
 ## Implemented now
 
@@ -54,6 +54,9 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Batch pipeline: `backend/app/batch_pipeline.py`.
 - Job endpoints: `/api/jobs/symbol` and `/api/jobs/batch`.
 - Readiness endpoint: `/api/readiness`.
+- Diagnostics endpoint: `/api/diagnostics`.
+- Diagnostics service: `backend/app/diagnostics.py`.
+- Runtime check script: `scripts/runtime_check.py`.
 - Overview service with alerts and portfolio bias: `backend/app/overview_service.py`.
 - Alert service: `backend/app/alerts.py`.
 - Portfolio exposure service: `backend/app/portfolio.py`.
@@ -80,7 +83,9 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Integration notes: `docs/INTEGRATIONS.md`.
 - Production DB notes: `docs/PRODUCTION_DB.md`.
 - Production checklist: `docs/PRODUCTION_CHECKLIST.md`.
+- Runtime check guide: `docs/RUNTIME_CHECK.md`.
 - Deployment notes: `deploy/README.md`.
+- Process layout: `deploy/processes.md`.
 - Runbook: `docs/RUNBOOK.md`.
 
 Important: this project analyzes and explains. It does not execute trades.
@@ -111,6 +116,7 @@ GET /api/streaming/status
 GET /api/runtime/status
 GET /api/scheduler/status
 GET /api/readiness
+GET /api/diagnostics
 GET /api/context/status
 GET /api/universe?exchange=binance&timeframe=1h&limit=10
 GET /api/screener?exchange=binance&timeframe=1h&limit=10
@@ -181,13 +187,13 @@ NEXT_PUBLIC_API_BASE=http://localhost:8000 npm run dev
 
 ## Current completion estimate
 
-92% complete as code/architecture.
+94% complete as code/architecture.
 
 Remaining production work:
 
 1. Runtime verification and fixes after installing dependencies.
 2. Source-specific macro/social provider fetchers require confirmed API/source rules.
-3. Docker files were blocked by repository write safety tooling; deployment runbook is present instead.
+3. Docker files were blocked by repository write safety tooling; deployment runbook and process layout are present instead.
 4. Next.js dashboard needs UI polish beyond scaffold/main/health pages.
 5. Cryptofeed runner needs runtime validation against installed cryptofeed version.
 
