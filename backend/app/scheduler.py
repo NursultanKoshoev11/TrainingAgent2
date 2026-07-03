@@ -1,8 +1,19 @@
+import json
+import os
 import time
 
+from app.database import save_advisory_signal
 from app.overview_service import build_overview
 from app.settings import DEFAULT_EXCHANGE, DEFAULT_TIMEFRAME
-from app.storage import save_signal
+
+
+def scheduler_config():
+    return {
+        'market_interval_seconds': int(os.getenv('MARKET_INTERVAL_SECONDS', '300')),
+        'save_signals': os.getenv('SAVE_SCHEDULED_SIGNALS', 'true').lower() == 'true',
+        'exchange': os.getenv('DEFAULT_EXCHANGE', DEFAULT_EXCHANGE),
+        'timeframe': os.getenv('DEFAULT_TIMEFRAME', DEFAULT_TIMEFRAME),
+    }
 
 
 def run_advisory_cycle(exchange=DEFAULT_EXCHANGE, timeframe=DEFAULT_TIMEFRAME, save=True):
@@ -11,15 +22,21 @@ def run_advisory_cycle(exchange=DEFAULT_EXCHANGE, timeframe=DEFAULT_TIMEFRAME, s
     if save:
         for item in overview.get('items', []):
             if 'recommendation' in item:
-                saved.append(save_signal(item))
+                saved.append(save_advisory_signal(item))
     return {'overview': overview, 'saved_signal_ids': saved}
 
 
-def run_forever(interval_seconds=300):
+def run_cycle_from_config():
+    config = scheduler_config()
+    return run_advisory_cycle(exchange=config['exchange'], timeframe=config['timeframe'], save=config['save_signals'])
+
+
+def run_forever():
+    config = scheduler_config()
     while True:
-        result = run_advisory_cycle(save=True)
-        print(result)
-        time.sleep(interval_seconds)
+        result = run_cycle_from_config()
+        print(json.dumps(result, indent=2))
+        time.sleep(config['market_interval_seconds'])
 
 
 if __name__ == '__main__':
