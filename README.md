@@ -1,92 +1,47 @@
 # Crypto AI Advisor
 
-Crypto AI Advisor is a non-custodial, non-trading market intelligence system for crypto markets. It collects exchange data, reads crypto news, calculates market/sentiment/risk scores, and returns explainable advisory signals.
+Crypto AI Advisor is an advisory-only crypto market analysis project. It is being built to combine market data, news context, sentiment, risk scoring, and explainable recommendations.
 
-> This project does **not** place real orders. It is an analytics and advisory system only.
+## Current repository state
 
-## What it does
+Implemented now:
 
-- Collects market data from Binance, Bybit, or any exchange supported by CCXT.
-- Computes technical market metrics: trend, volatility, volume strength, RSI, EMA trend, and liquidity notes.
-- Collects crypto news from CryptoPanic when an API key is configured, with RSS fallback support.
-- Converts news into structured sentiment signals.
-- Combines market, sentiment, and risk into a final advisory recommendation.
-- Exposes a FastAPI backend.
-- Includes a simple dashboard.
-- Includes optional Freqtrade and vectorbt research skeletons for future paper-trading/backtesting.
+- Backend package structure.
+- FastAPI router skeleton.
+- Advisory scoring core in `backend/app/advisor_core.py`.
+- Demo advisory endpoint in `backend/app/api.py`.
+- Server entrypoint in `backend/app/server.py`.
+- Architecture documentation in `docs/ARCHITECTURE.md`.
+- Environment example in `.env.example`.
 
-## Architecture
+Important: this is not a real-money trading system. It is for analytics and advice only.
 
-```text
-Exchange APIs / News APIs
-        |
-        v
-Collectors -> PostgreSQL -> Signal Engine -> Risk Engine -> FastAPI -> Dashboard
-```
+## Current demo endpoint
 
-Main modules:
-
-```text
-backend/      FastAPI API, scoring, database models
-workers/      Scheduled collectors for market and news data
-frontend/     Minimal dashboard
-strategies/   Optional Freqtrade strategy skeleton
-research/     Optional vectorbt research scripts
-docs/         Architecture and safety notes
-```
-
-## Quick start
-
-1. Copy environment variables:
+After installing FastAPI and Uvicorn, run:
 
 ```bash
-cp .env.example .env
+cd backend
+python -m pip install fastapi uvicorn
+python -m uvicorn app.server:server --reload
 ```
 
-2. Start the stack:
-
-```bash
-docker compose up --build
-```
-
-3. Open:
+Then open:
 
 ```text
-Backend API: http://localhost:8000/docs
-Dashboard:   http://localhost:3000
+GET http://localhost:8000/ping
+GET http://localhost:8000/api/demo-advice
 ```
 
-## Default API endpoints
+## Next implementation steps
 
-```text
-GET /health
-GET /api/market/snapshot?symbol=BTC/USDT&exchange=binance&timeframe=1h
-GET /api/news/latest?symbol=BTC
-GET /api/advice?symbol=BTC/USDT&exchange=binance&timeframe=1h
-```
+1. Add public exchange-data collectors for Binance and Bybit.
+2. Add news collectors from RSS and API sources.
+3. Add a stronger sentiment module.
+4. Add database storage for market snapshots, news, and generated signals.
+5. Add a dashboard.
+6. Add historical testing scripts.
 
-## Recommendation labels
+## Safety rule
 
-```text
-STRONG_BULLISH_SETUP  Strong positive setup, but still not a command to buy.
-BULLISH_SETUP         Positive setup with normal caution.
-WAIT                  Mixed or weak signal.
-HIGH_RISK_AVOID       Risk is too high or data is not reliable enough.
-BEARISH_SETUP         Negative setup.
-```
-
-## Safety rules
-
-- No real trading by default.
-- No exchange private keys required for the MVP.
-- Public market data only.
-- Every signal includes risk flags and a confidence score.
-- The system is advisory only and must not be treated as financial advice.
-
-## Next steps
-
-- Add persistent scheduled ingestion with Celery or Dramatiq.
-- Add TimescaleDB hypertables for candles.
-- Add real FinGPT/FinBERT model server for stronger sentiment analysis.
-- Add more exchanges through CCXT and Cryptofeed.
-- Add walk-forward backtesting before any paper-trading experiment.
+The default project must stay advisory-only. Do not add real exchange execution to the default backend.
