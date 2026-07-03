@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Response
 
 from app.advice_service import build_advice
 from app.database import database_status, list_recent_advisory_signals, save_advisory_signal
 from app.market_service import build_market_snapshot
 from app.news_data import latest_news
 from app.overview_service import build_overview
+from app.reporting import build_json_report, build_text_report
 from app.sentiment import enrich_news
 from app.streaming import streaming_status
 from app.watchlist import get_watchlist
@@ -53,6 +54,16 @@ def advice(symbol: str = Query('BTC/USDT'), exchange: str = Query('binance'), ti
 @router.get('/api/overview')
 def overview(exchange: str = Query('binance'), timeframe: str = Query('1h')):
     return build_overview(exchange=exchange, timeframe=timeframe)
+
+
+@router.get('/api/reports/json')
+def report_json(exchange: str = Query('binance'), timeframe: str = Query('1h')):
+    return build_json_report(exchange=exchange, timeframe=timeframe)
+
+
+@router.get('/api/reports/text')
+def report_text(exchange: str = Query('binance'), timeframe: str = Query('1h')):
+    return Response(content=build_text_report(exchange=exchange, timeframe=timeframe), media_type='text/plain')
 
 
 @router.get('/api/signals/recent')
