@@ -6,5 +6,8 @@ dependencies = [
   "uvicorn"
 ]
 
+[project.optional-dependencies]
+exchange = ["ccxt"]
+
 [tool.uvicorn]
 app = "app.server:server"
