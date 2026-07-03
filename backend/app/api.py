@@ -6,6 +6,7 @@ from app.market_service import build_market_snapshot
 from app.news_data import latest_news
 from app.overview_service import build_overview
 from app.sentiment import enrich_news
+from app.streaming import streaming_status
 from app.watchlist import get_watchlist
 
 router = APIRouter()
@@ -24,6 +25,11 @@ def watchlist():
 @router.get('/api/database/status')
 def db_status():
     return database_status()
+
+
+@router.get('/api/streaming/status')
+def stream_status():
+    return streaming_status()
 
 
 @router.get('/api/market/snapshot')
