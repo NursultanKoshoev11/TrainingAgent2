@@ -52,6 +52,8 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Full advice service: `backend/app/advice_service.py`.
 - Persistence pipeline: `backend/app/pipeline.py`.
 - Batch pipeline: `backend/app/batch_pipeline.py`.
+- Job endpoints: `/api/jobs/symbol` and `/api/jobs/batch`.
+- Readiness endpoint: `/api/readiness`.
 - Overview service with alerts and portfolio bias: `backend/app/overview_service.py`.
 - Alert service: `backend/app/alerts.py`.
 - Portfolio exposure service: `backend/app/portfolio.py`.
@@ -60,7 +62,7 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Provider health service: `backend/app/provider_health.py`.
 - Database abstraction: `backend/app/database.py`.
 - Expanded database schema: `backend/app/db_schema.py`.
-- Database helper: `backend/app/db.py`.
+- Database helper with PostgreSQL routing: `backend/app/db.py`.
 - Real PostgreSQL adapter with psycopg: `backend/app/postgres_adapter.py`.
 - Timescale/PostgreSQL schema draft: `database/timescale_schema.sql`.
 - Local SQLite signal storage: `backend/app/storage.py`.
@@ -77,6 +79,7 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Service map: `docs/SERVICE_MAP.md`.
 - Integration notes: `docs/INTEGRATIONS.md`.
 - Production DB notes: `docs/PRODUCTION_DB.md`.
+- Production checklist: `docs/PRODUCTION_CHECKLIST.md`.
 - Deployment notes: `deploy/README.md`.
 - Runbook: `docs/RUNBOOK.md`.
 
@@ -107,9 +110,12 @@ GET /api/database/status
 GET /api/streaming/status
 GET /api/runtime/status
 GET /api/scheduler/status
+GET /api/readiness
 GET /api/context/status
 GET /api/universe?exchange=binance&timeframe=1h&limit=10
 GET /api/screener?exchange=binance&timeframe=1h&limit=10
+GET /api/jobs/symbol?symbol=BTC/USDT&exchange=binance&timeframe=1h&save=true
+GET /api/jobs/batch?exchange=binance&timeframe=1h&limit=10&save=true
 GET /api/market/regime?symbol=BTC/USDT&exchange=binance&timeframe=1h
 GET /api/market/snapshot?symbol=BTC/USDT&exchange=binance&timeframe=1h
 GET /api/news/latest?symbol=BTC/USDT&limit=12
@@ -175,12 +181,12 @@ NEXT_PUBLIC_API_BASE=http://localhost:8000 npm run dev
 
 ## Current completion estimate
 
-88% complete.
+92% complete as code/architecture.
 
 Remaining production work:
 
 1. Runtime verification and fixes after installing dependencies.
-2. Full source-specific macro/social provider fetchers after API/source rules are confirmed.
+2. Source-specific macro/social provider fetchers require confirmed API/source rules.
 3. Docker files were blocked by repository write safety tooling; deployment runbook is present instead.
 4. Next.js dashboard needs UI polish beyond scaffold/main/health pages.
 5. Cryptofeed runner needs runtime validation against installed cryptofeed version.
