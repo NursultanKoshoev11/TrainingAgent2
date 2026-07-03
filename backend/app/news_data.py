@@ -1,6 +1,8 @@
 import xml.etree.ElementTree as ET
 import urllib.request
 
+from app.external_news import fetch_cryptopanic
+
 RSS_URLS = [
     'https://cointelegraph.com/rss',
     'https://www.coindesk.com/arc/outboundfeeds/rss/'
@@ -40,13 +42,21 @@ def fetch_rss(url):
             'url': item.findtext('link'),
             'published_at': item.findtext('pubDate'),
             'related_assets': related_assets(title),
+            'source': 'rss',
         })
     return items
 
 
 def latest_news(symbol='BTC/USDT', limit=12):
-    asset = asset_from_symbol(symbol)
     output = []
+    try:
+        output.extend(fetch_cryptopanic(symbol=symbol, limit=limit))
+    except Exception:
+        pass
+    if len(output) >= limit:
+        return output[:limit]
+
+    asset = asset_from_symbol(symbol)
     for url in RSS_URLS:
         try:
             rows = fetch_rss(url)
