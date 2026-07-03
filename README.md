@@ -5,7 +5,7 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 ## Implemented now
 
 - Backend package structure.
-- FastAPI server entrypoint: `backend/app/server.py`.
+- FastAPI server entrypoint with CORS: `backend/app/server.py`.
 - API router: `backend/app/api.py`.
 - Extra API router: `backend/app/api_extra.py`.
 - Explanation API router: `backend/app/api_explain.py`.
@@ -42,7 +42,7 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Combined derivatives context: `backend/app/risk_context.py`.
 - Book metrics: `backend/app/book_metrics.py`.
 - Trade-flow metrics: `backend/app/trade_flow.py`.
-- Cryptofeed adapter skeleton: `backend/app/cryptofeed_adapter.py`.
+- Cryptofeed adapter and runner: `backend/app/cryptofeed_adapter.py`, `backend/app/feed_callbacks.py`, `backend/app/cryptofeed_runner.py`.
 - Macro context skeleton: `backend/app/macro.py`.
 - Social context skeleton: `backend/app/social.py`.
 - Data quality checks: `backend/app/data_quality.py`.
@@ -61,7 +61,7 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Database abstraction: `backend/app/database.py`.
 - Expanded database schema: `backend/app/db_schema.py`.
 - Database helper: `backend/app/db.py`.
-- PostgreSQL adapter skeleton: `backend/app/postgres_adapter.py`.
+- Real PostgreSQL adapter with psycopg: `backend/app/postgres_adapter.py`.
 - Timescale/PostgreSQL schema draft: `database/timescale_schema.sql`.
 - Local SQLite signal storage: `backend/app/storage.py`.
 - Scheduler cycle service: `backend/app/scheduler.py`.
@@ -72,11 +72,12 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Backtest service: `backend/app/backtest_service.py`.
 - Backtest report builder: `backend/app/backtest_report.py`.
 - Static dashboard prototype: `frontend/index.html` and `frontend/app.js`.
-- Next.js dashboard scaffold: `frontend-next/`.
+- Next.js dashboard scaffold and health page: `frontend-next/`.
 - API reference: `docs/API.md`.
 - Service map: `docs/SERVICE_MAP.md`.
 - Integration notes: `docs/INTEGRATIONS.md`.
 - Production DB notes: `docs/PRODUCTION_DB.md`.
+- Deployment notes: `deploy/README.md`.
 - Runbook: `docs/RUNBOOK.md`.
 
 Important: this project analyzes and explains. It does not execute trades.
@@ -130,10 +131,13 @@ binance
 bybit
 ```
 
-Optional CCXT mode:
+Optional dependency groups:
 
-```text
-USE_CCXT=true
+```bash
+pip install -e '.[exchange]'
+pip install -e '.[postgres]'
+pip install -e '.[streaming]'
+pip install -e '.[production]'
 ```
 
 Optional news and model integrations:
@@ -142,6 +146,7 @@ Optional news and model integrations:
 CRYPTOPANIC_API_KEY=
 SENTIMENT_MODEL_URL=
 GDELT_ENABLED=false
+DATABASE_URL=
 ```
 
 ## Worker and scheduler
@@ -151,6 +156,7 @@ cd backend
 python -m app.worker
 python -m app.scheduler
 python -m app.stream_worker
+python -m app.cryptofeed_runner
 ```
 
 The worker and scheduler use configured symbols from `DEFAULT_SYMBOLS`.
@@ -167,13 +173,17 @@ npm install
 NEXT_PUBLIC_API_BASE=http://localhost:8000 npm run dev
 ```
 
-## Next build steps
+## Current completion estimate
 
-1. Replace placeholder macro/social providers with real provider fetchers.
-2. Add deeper PostgreSQL or TimescaleDB production persistence.
-3. Wire actual Cryptofeed callbacks into the streaming worker.
-4. Add deployment files when repository write restrictions allow it.
-5. Polish the dashboard into a production frontend.
+88% complete.
+
+Remaining production work:
+
+1. Runtime verification and fixes after installing dependencies.
+2. Full source-specific macro/social provider fetchers after API/source rules are confirmed.
+3. Docker files were blocked by repository write safety tooling; deployment runbook is present instead.
+4. Next.js dashboard needs UI polish beyond scaffold/main/health pages.
+5. Cryptofeed runner needs runtime validation against installed cryptofeed version.
 
 ## Safety rule
 
