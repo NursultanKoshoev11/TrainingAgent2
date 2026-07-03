@@ -1,44 +1,51 @@
 # Production Checklist
 
+Чеклист нужен перед реальным production-запуском. Он помогает проверить backend, database, market data, streaming и dashboard.
+
 ## Backend
 
-- Start FastAPI server.
-- Confirm `/ping` returns ok.
-- Confirm `/api/providers/health` returns provider status.
-- Confirm `/api/readiness` returns readiness estimate.
+- Запустить FastAPI server.
+- Проверить, что `/ping` возвращает ok.
+- Проверить, что `/api/providers/health` возвращает provider status.
+- Проверить, что `/api/diagnostics` показывает `required_ok: true`.
+- Проверить, что `/api/readiness` возвращает readiness estimate.
+- Проверить, что `/api/health/deep` возвращает полный health report.
 
 ## Database
 
-- Set `DATABASE_URL` for PostgreSQL.
-- Install `psycopg` optional dependency.
-- Confirm `/api/database/status` shows `mode: postgresql`.
-- Run `/api/jobs/symbol?save=true` and confirm records are saved.
+- Настроить `DATABASE_URL` для PostgreSQL.
+- Установить optional dependency group `postgres`.
+- Запустить `python ../scripts/init_postgres.py` из папки `backend`.
+- Проверить, что `/api/database/status` показывает `mode: postgresql`.
+- Запустить `/api/jobs/symbol?save=true` и подтвердить, что records сохраняются.
 
 ## Market data
 
-- Confirm `/api/market/snapshot` returns price and score.
-- Confirm `/api/screener` returns top setups and high-risk assets.
+- Проверить, что `/api/market/snapshot` возвращает price и score.
+- Проверить, что `/api/screener` возвращает top setups и high-risk assets.
+- Проверить, что `/api/universe` анализирует список symbols без критических ошибок.
 
-## News and context
+## News и context
 
-- Set `CRYPTOPANIC_API_KEY` if available.
-- Set `GDELT_ENABLED=true` after provider review.
-- Confirm `/api/context/status` returns expected provider states.
+- Настроить `CRYPTOPANIC_API_KEY`, если ключ доступен.
+- Включить `GDELT_ENABLED=true` только после проверки provider/source rules.
+- Проверить, что `/api/context/status` возвращает ожидаемые provider states.
 
 ## Streaming
 
-- Install `cryptofeed` optional dependency.
-- Run `python -m app.cryptofeed_runner`.
-- Confirm `market_feed_events.jsonl` is created.
+- Установить optional dependency group `streaming`.
+- Запустить `python -m app.cryptofeed_runner`.
+- Проверить, что создаётся `market_feed_events.jsonl`.
+- Проверить, что runner совместим с установленной версией `cryptofeed`.
 
 ## Dashboard
 
-- Run backend on port 8000.
-- Run Next dashboard with `NEXT_PUBLIC_API_BASE=http://localhost:8000`.
-- Confirm overview and health pages load.
+- Запустить backend на port 8000.
+- Запустить Next dashboard с `NEXT_PUBLIC_API_BASE=http://localhost:8000`.
+- Проверить, что overview и health pages загружаются.
 
 ## Safety
 
-- Keep the system advisory-only.
-- Do not add exchange order execution by default.
-- Do not store private exchange credentials in repository files.
+- Система должна оставаться advisory-only.
+- Не добавлять exchange order execution по умолчанию.
+- Не хранить private exchange credentials в repository files.
