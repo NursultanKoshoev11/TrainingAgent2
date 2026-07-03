@@ -6,6 +6,7 @@ from app.news_data import latest_news
 from app.overview_service import build_overview
 from app.sentiment import enrich_news
 from app.storage import recent_signals, save_signal
+from app.watchlist import get_watchlist
 
 router = APIRouter()
 
@@ -13,6 +14,11 @@ router = APIRouter()
 @router.get('/ping')
 def ping():
     return {'ok': True, 'mode': 'advisory-only'}
+
+
+@router.get('/api/watchlist')
+def watchlist():
+    return get_watchlist()
 
 
 @router.get('/api/market/snapshot')
