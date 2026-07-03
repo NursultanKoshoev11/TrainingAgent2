@@ -1,8 +1,8 @@
 # Next Dashboard
 
-This is the future full dashboard for Crypto AI Advisor.
+Это будущий полноценный dashboard для Crypto AI Advisor.
 
-## Run
+## Запуск
 
 ```bash
 cd frontend-next
@@ -10,13 +10,13 @@ npm install
 NEXT_PUBLIC_API_BASE=http://localhost:8000 npm run dev
 ```
 
-## Pages planned
+## Запланированные страницы
 
-- Overview
-- Asset detail
-- Provider health
+- Обзор
+- Детальная страница актива
+- Статус провайдеров
 - Runtime status
-- Signal history
+- История signals
 - Backtest reports
 
-No trading controls should be added to this dashboard.
+Dashboard должен оставаться advisory-only.
