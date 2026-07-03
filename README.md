@@ -1,6 +1,6 @@
 # Crypto AI Advisor
 
-Crypto AI Advisor is an advisory-only crypto market analysis project. It combines public market data, optional CCXT exchange access, news context, sentiment scoring, risk scoring, data-quality flags, local signal storage, and explainable recommendations.
+Crypto AI Advisor is an advisory-only crypto market analysis project. It combines public market data, optional CCXT exchange access, news context, sentiment scoring, risk scoring, liquidity scoring, event-risk scoring, data-quality flags, local signal storage, and explainable recommendations.
 
 ## Implemented now
 
@@ -16,16 +16,22 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Optional external sentiment model adapter: `backend/app/model_adapter.py`.
 - Sentiment service: `backend/app/sentiment.py`.
 - Risk service: `backend/app/risk.py`.
+- Liquidity service: `backend/app/liquidity.py`.
+- Event-risk service: `backend/app/event_risk.py`.
 - Data quality checks: `backend/app/data_quality.py`.
 - Full advice service: `backend/app/advice_service.py`.
 - Overview service: `backend/app/overview_service.py`.
 - Watchlist service: `backend/app/watchlist.py`.
+- Database abstraction: `backend/app/database.py`.
 - Local SQLite signal storage: `backend/app/storage.py`.
-- Worker: `backend/app/worker.py`.
+- Scheduler cycle skeleton: `backend/app/scheduler.py`.
+- Streaming status skeleton: `backend/app/streaming.py`.
+- Macro context skeleton: `backend/app/macro_context.py`.
+- Research report helper: `backend/app/research_report.py`.
 - Static dashboard prototype: `frontend/index.html`.
-- Research helper: `research/simple_backtest.py`.
-- Unit tests under `tests/`.
-- GitHub Actions test workflow.
+- Dashboard spec: `docs/DASHBOARD_SPEC.md`.
+- Storage model spec: `docs/STORAGE_MODEL.md`.
+- Deployment plan: `docs/DEPLOYMENT_PLAN.md`.
 
 Important: this project analyzes and explains. It does not execute trades.
 
@@ -44,17 +50,13 @@ cd backend
 bash run_backend.sh
 ```
 
-## Run tests
-
-```bash
-python -m unittest discover -s tests
-```
-
 ## API endpoints
 
 ```text
 GET /ping
 GET /api/watchlist
+GET /api/database/status
+GET /api/streaming/status
 GET /api/market/snapshot?symbol=BTC/USDT&exchange=binance&timeframe=1h
 GET /api/news/latest?symbol=BTC/USDT&limit=12
 GET /api/advice?symbol=BTC/USDT&exchange=binance&timeframe=1h
@@ -83,22 +85,23 @@ CRYPTOPANIC_API_KEY=
 SENTIMENT_MODEL_URL=
 ```
 
-## Worker
+## Worker and scheduler
 
 ```bash
 cd backend
 python -m app.worker
+python -m app.scheduler
 ```
 
-The worker checks all configured symbols from `DEFAULT_SYMBOLS`.
+The worker and scheduler use configured symbols from `DEFAULT_SYMBOLS`.
 
-## Next steps
+## Next build steps
 
-1. Add WebSocket market feed layer.
-2. Add proper React or Next.js dashboard.
-3. Add validation reports and more complete backtesting.
-4. Add PostgreSQL or TimescaleDB storage for production use.
-5. Add deployment files after repository write restrictions allow it.
+1. Build the full dashboard implementation.
+2. Add PostgreSQL or TimescaleDB production adapter.
+3. Add real WebSocket/Cryptofeed market stream worker.
+4. Add full historical backtesting pipeline.
+5. Add deployment files when repository write restrictions allow it.
 
 ## Safety rule
 
