@@ -1,0 +1,10 @@
+[project]
+name = "crypto-ai-advisor-backend"
+version = "0.1.0"
+dependencies = [
+  "fastapi",
+  "uvicorn"
+]
+
+[tool.uvicorn]
+app = "app.server:server"
