@@ -3,6 +3,7 @@ from fastapi import APIRouter, Query, Response
 from app.advice_service import build_advice
 from app.backtest_service import backtest_symbol
 from app.database import database_status, list_recent_advisory_signals, save_advisory_signal
+from app.export_service import signals_as_lines
 from app.market_service import build_market_snapshot
 from app.news_data import latest_news
 from app.overview_service import build_overview
@@ -75,3 +76,8 @@ def backtest(symbol: str = Query('BTC/USDT'), exchange: str = Query('binance'), 
 @router.get('/api/signals/recent')
 def signals_recent(limit: int = Query(50, ge=1, le=200)):
     return {'items': list_recent_advisory_signals(limit=limit)}
+
+
+@router.get('/api/signals/export')
+def signals_export(limit: int = Query(50, ge=1, le=200)):
+    return Response(content=signals_as_lines(list_recent_advisory_signals(limit=limit)), media_type='text/plain')
