@@ -1,6 +1,6 @@
 # Crypto AI Advisor
 
-Crypto AI Advisor is an advisory-only crypto market analysis project. It combines public market data, news context, sentiment scoring, risk scoring, and explainable recommendations.
+Crypto AI Advisor is an advisory-only crypto market analysis project. It combines public market data, news context, sentiment scoring, risk scoring, local signal storage, and explainable recommendations.
 
 ## Implemented now
 
@@ -15,6 +15,7 @@ Crypto AI Advisor is an advisory-only crypto market analysis project. It combine
 - Risk service: `backend/app/risk.py`.
 - Full advice service: `backend/app/advice_service.py`.
 - Overview service: `backend/app/overview_service.py`.
+- Local SQLite signal storage: `backend/app/storage.py`.
 - Worker: `backend/app/worker.py`.
 - Static dashboard prototype: `frontend/index.html`.
 - Research helper: `research/simple_backtest.py`.
@@ -40,11 +41,12 @@ bash run_backend.sh
 
 ```text
 GET /ping
-GET /api/demo-advice
 GET /api/market/snapshot?symbol=BTC/USDT&exchange=binance&timeframe=1h
 GET /api/news/latest?symbol=BTC/USDT&limit=12
 GET /api/advice?symbol=BTC/USDT&exchange=binance&timeframe=1h
+GET /api/advice?symbol=BTC/USDT&exchange=binance&timeframe=1h&save=true
 GET /api/overview?exchange=binance&timeframe=1h
+GET /api/signals/recent?limit=50
 ```
 
 Supported public market sources in this version:
@@ -65,11 +67,11 @@ The worker checks all configured symbols from `DEFAULT_SYMBOLS`.
 
 ## Next steps
 
-1. Add persistent database storage.
-2. Add stronger sentiment model adapter.
-3. Add WebSocket market feed layer.
-4. Add proper React or Next.js dashboard.
-5. Add validation reports and more complete backtesting.
+1. Add stronger sentiment model adapter.
+2. Add WebSocket market feed layer.
+3. Add proper React or Next.js dashboard.
+4. Add validation reports and more complete backtesting.
+5. Add deployment files after repository write restrictions allow it.
 
 ## Safety rule
 
