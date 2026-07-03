@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Query
 
+from app.context_registry import context_registry_status
 from app.market_regime import classify_market_regime
 from app.market_service import build_market_snapshot
 from app.runtime_status import runtime_status
@@ -17,6 +18,11 @@ def runtime():
 @extra_router.get('/api/scheduler/status')
 def scheduler():
     return scheduler_status()
+
+
+@extra_router.get('/api/context/status')
+def context_status():
+    return context_registry_status()
 
 
 @extra_router.get('/api/universe')
