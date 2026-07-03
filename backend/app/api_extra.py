@@ -5,6 +5,7 @@ from app.context_registry import context_registry_status
 from app.market_regime import classify_market_regime
 from app.market_service import build_market_snapshot
 from app.pipeline import run_symbol_pipeline
+from app.readiness import readiness_report
 from app.runtime_status import runtime_status
 from app.scheduler import scheduler_status
 from app.universe_service import analyze_universe
@@ -20,6 +21,11 @@ def runtime():
 @extra_router.get('/api/scheduler/status')
 def scheduler():
     return scheduler_status()
+
+
+@extra_router.get('/api/readiness')
+def readiness():
+    return readiness_report()
 
 
 @extra_router.get('/api/context/status')
