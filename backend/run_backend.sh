@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+python -m pip install fastapi uvicorn
+python -m uvicorn app.server:server --host 0.0.0.0 --port 8000
