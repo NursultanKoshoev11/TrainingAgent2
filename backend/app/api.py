@@ -6,6 +6,7 @@ from app.market_service import build_market_snapshot
 from app.news_data import latest_news
 from app.overview_service import build_overview
 from app.sentiment import enrich_news
+from app.storage import recent_signals, save_signal
 
 router = APIRouter()
 
@@ -26,13 +27,21 @@ def news_latest(symbol: str = Query('BTC/USDT'), limit: int = Query(12, ge=1, le
 
 
 @router.get('/api/advice')
-def advice(symbol: str = Query('BTC/USDT'), exchange: str = Query('binance'), timeframe: str = Query('1h')):
-    return build_advice(symbol=symbol, exchange=exchange, timeframe=timeframe)
+def advice(symbol: str = Query('BTC/USDT'), exchange: str = Query('binance'), timeframe: str = Query('1h'), save: bool = Query(False)):
+    result = build_advice(symbol=symbol, exchange=exchange, timeframe=timeframe)
+    if save:
+        result['saved_signal_id'] = save_signal(result)
+    return result
 
 
 @router.get('/api/overview')
 def overview(exchange: str = Query('binance'), timeframe: str = Query('1h')):
     return build_overview(exchange=exchange, timeframe=timeframe)
+
+
+@router.get('/api/signals/recent')
+def signals_recent(limit: int = Query(50, ge=1, le=200)):
+    return {'items': recent_signals(limit=limit)}
 
 
 @router.get('/api/demo-advice')
