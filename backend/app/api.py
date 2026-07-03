@@ -4,6 +4,7 @@ from app.advice_service import build_advice
 from app.advisor_core import final_advice, score_market
 from app.market_service import build_market_snapshot
 from app.news_data import latest_news
+from app.overview_service import build_overview
 from app.sentiment import enrich_news
 
 router = APIRouter()
@@ -27,6 +28,11 @@ def news_latest(symbol: str = Query('BTC/USDT'), limit: int = Query(12, ge=1, le
 @router.get('/api/advice')
 def advice(symbol: str = Query('BTC/USDT'), exchange: str = Query('binance'), timeframe: str = Query('1h')):
     return build_advice(symbol=symbol, exchange=exchange, timeframe=timeframe)
+
+
+@router.get('/api/overview')
+def overview(exchange: str = Query('binance'), timeframe: str = Query('1h')):
+    return build_overview(exchange=exchange, timeframe=timeframe)
 
 
 @router.get('/api/demo-advice')
