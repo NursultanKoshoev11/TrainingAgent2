@@ -1,3 +1,5 @@
+from app.model_adapter import score_with_external_model
+
 POSITIVE_WORDS = {
     'approval', 'approved', 'adoption', 'growth', 'rally', 'surge', 'record',
     'upgrade', 'partnership', 'launch', 'inflow', 'institutional', 'breakthrough'
@@ -9,7 +11,7 @@ NEGATIVE_WORDS = {
 }
 
 
-def score_text(text):
+def local_score_text(text):
     words = {word.strip('.,:;!?()[]{}').lower() for word in text.split()}
     positive = len(words & POSITIVE_WORDS)
     negative = len(words & NEGATIVE_WORDS)
@@ -22,7 +24,22 @@ def score_text(text):
         label = 'negative'
     else:
         label = 'neutral'
-    return {'label': label, 'score': round(score, 2), 'confidence': round(confidence, 2)}
+    return {'label': label, 'score': round(score, 2), 'confidence': round(confidence, 2), 'engine': 'local'}
+
+
+def score_text(text):
+    try:
+        external = score_with_external_model(text)
+    except Exception:
+        external = None
+    if external:
+        return {
+            'label': external.get('label', 'neutral'),
+            'score': float(external.get('score', 50)),
+            'confidence': float(external.get('confidence', 0.5)),
+            'engine': 'external',
+        }
+    return local_score_text(text)
 
 
 def enrich_news(items):
@@ -33,6 +50,7 @@ def enrich_news(items):
         new_item['sentiment'] = scored['label']
         new_item['sentiment_score'] = scored['score']
         new_item['confidence'] = scored['confidence']
+        new_item['sentiment_engine'] = scored['engine']
         result.append(new_item)
     return result
 
