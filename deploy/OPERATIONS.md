@@ -1,8 +1,16 @@
 # Operations Guide
 
+Инструкция для запуска проекта на сервере без Docker. Dockerfile/compose ранее блокировались GitHub write tooling, поэтому текущий production-вариант описан через processes и systemd templates.
+
 ## Environment
 
-Use `deploy/env.example.production` as a production template.
+Использовать `deploy/env.example.production` как production template. Перед запуском заменить placeholder values:
+
+- `DATABASE_URL`
+- `CRYPTOPANIC_API_KEY`, если используется
+- `SENTIMENT_MODEL_URL`, если используется внешний model service
+- `CORS_ORIGINS`
+- `NEXT_PUBLIC_API_BASE`
 
 ## API process
 
@@ -17,6 +25,14 @@ python -m uvicorn app.server:server --host 0.0.0.0 --port 8000
 ```bash
 cd backend
 python ../scripts/init_postgres.py
+```
+
+После этого проверить:
+
+```text
+/api/database/status
+/api/readiness
+/api/health/deep
 ```
 
 ## Worker processes
@@ -42,6 +58,6 @@ python -m app.cryptofeed_runner
 - `/api/health/deep`
 - `/api/providers/health`
 
-## Rule
+## Правило
 
-The deployment must remain advisory-only.
+Deployment должен оставаться advisory-only. Не добавлять order execution и не хранить private exchange credentials в репозитории.
