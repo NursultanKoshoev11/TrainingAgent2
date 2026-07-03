@@ -5,6 +5,7 @@ from app.liquidity import estimate_liquidity
 from app.macro import neutral_macro_context
 from app.market_service import build_market_snapshot
 from app.news_data import latest_news
+from app.news_ranker import rank_news
 from app.risk import calculate_risk
 from app.sentiment import aggregate, enrich_news
 from app.social import neutral_social_context
@@ -12,7 +13,7 @@ from app.social import neutral_social_context
 
 def build_advice(symbol='BTC/USDT', exchange='binance', timeframe='1h', news_limit=12):
     market = build_market_snapshot(symbol=symbol, exchange=exchange, timeframe=timeframe)
-    news = enrich_news(latest_news(symbol=symbol, limit=news_limit))
+    news = rank_news(enrich_news(latest_news(symbol=symbol, limit=news_limit)))
     sentiment_score = aggregate(news)
     liquidity = estimate_liquidity(market)
     event_risk = detect_event_risk(news)
